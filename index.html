@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wheel of Names</title>
+  <title>Cooch's Wheel of Good</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,30 +12,22 @@
 <body>
   <div class="app">
     <header class="header">
-      <h1>Wheel of Names</h1>
-      <p class="subtitle">Add names, spin the wheel, pick a winner</p>
+      <h1>Cooch's Wheel of Good</h1>
     </header>
 
     <main class="main">
-      <section class="names-section card">
-        <h2>Names</h2>
-        <p class="hint">Add up to 100 names. Each entry adds $5 to Prize and Charity.</p>
-        <div class="input-row">
-          <input
-            type="text"
-            id="name-input"
-            placeholder="Enter a name..."
-            maxlength="50"
-            autocomplete="off"
-          />
-          <button type="button" id="add-btn" class="btn btn-primary">Add</button>
+      <section class="wheel-area">
+        <div class="wheel-container">
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <div class="wheel-outer">
+            <div id="wheel" class="wheel" role="img" aria-label="Spinning wheel with names"></div>
+            <div id="wheel-center" class="wheel-center">
+              <span class="wheel-center-text">Click to spin</span>
+              <span class="wheel-center-sub">or press Ctrl+Enter</span>
+            </div>
+          </div>
         </div>
-        <div class="name-count"><span id="name-count">0</span> / 100 names</div>
-        <ul id="name-list" class="name-list"></ul>
-        <button type="button" id="clear-btn" class="btn btn-ghost">Clear all names</button>
-      </section>
-
-      <section class="wheel-section">
+        <div class="total-entries" id="total-entries">Total entries: 0</div>
         <div class="money-cards">
           <div class="money-card prize">
             <span class="money-label">Prize Money</span>
@@ -46,19 +38,30 @@
             <span class="money-value" id="charity-money">$0</span>
           </div>
         </div>
-
-        <div class="wheel-container">
-          <div class="wheel-pointer" aria-hidden="true"></div>
-          <div class="wheel-outer">
-            <div id="wheel" class="wheel" role="img" aria-label="Spinning wheel with names"></div>
-          </div>
-          <button type="button" id="spin-btn" class="btn btn-spin" disabled>Spin the wheel</button>
-        </div>
-
         <div id="winner-banner" class="winner-banner hidden" aria-live="polite">
-          <span class="winner-label">Winner:</span>
+          <span class="winner-label">Winner</span>
           <span id="winner-name" class="winner-name"></span>
         </div>
+      </section>
+
+      <section class="entries-panel card">
+        <div class="entries-header">
+          <span class="entries-count">Entries <strong id="name-count">0</strong> of 100</span>
+          <span class="entries-hint">Each name adds $5 to Prize & Charity</span>
+        </div>
+        <div class="input-row">
+          <input
+            type="text"
+            id="name-input"
+            placeholder="Add a name..."
+            maxlength="50"
+            autocomplete="off"
+          />
+          <button type="button" id="add-btn" class="btn btn-primary">Add</button>
+        </div>
+        <ul id="name-list" class="name-list"></ul>
+        <button type="button" id="spin-btn" class="btn btn-spin" disabled>Spin the wheel</button>
+        <button type="button" id="clear-btn" class="btn btn-ghost">Clear all</button>
       </section>
     </main>
   </div>
