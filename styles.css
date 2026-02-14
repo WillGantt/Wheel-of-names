@@ -78,13 +78,13 @@ body {
 .wheel-pointer {
   position: absolute;
   top: 50%;
-  right: -12px;
+  left: -12px;
   transform: translateY(-50%);
   width: 0;
   height: 0;
   border-top: 14px solid transparent;
   border-bottom: 14px solid transparent;
-  border-left: 24px solid #f1c40f;
+  border-right: 24px solid #f1c40f;
   z-index: 10;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }
@@ -217,29 +217,47 @@ body {
 }
 
 .winner-banner {
-  padding: 0.75rem 1.25rem;
+  padding: 1.25rem 2rem;
   background: var(--surface);
   border-radius: var(--radius);
-  border: 2px solid var(--accent-2);
+  border: 3px solid var(--accent-2);
   text-align: center;
-  min-width: 180px;
+  min-width: 220px;
+  transform-origin: center;
+}
+
+.winner-banner.winner-show {
+  animation: winnerPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .winner-banner.hidden {
   visibility: hidden;
 }
 
+@keyframes winnerPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .winner-label {
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.35rem;
 }
 
 .winner-name {
-  font-size: 1.35rem;
+  font-size: 2.25rem;
   font-weight: 700;
   color: var(--accent-2);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 
 /* Entries panel — right side */
