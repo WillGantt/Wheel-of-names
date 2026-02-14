@@ -195,12 +195,9 @@ function spinWheel() {
 
   const n = names.length;
   const anglePerSegment = n === 1 ? 360 : 360 / n;
-  const winnerIndex = n === 1 ? 0 : Math.floor(Math.random() * n);
-  const pointerAngle = 270;
-  const winnerCenterAngle = winnerIndex * anglePerSegment + anglePerSegment / 2;
   const fullSpins = 4 + Math.random() * 3;
-  const winnerAngle = (winnerCenterAngle - pointerAngle - accumulatedRotation + 360 * 10) % 360;
-  const totalRotation = 360 * fullSpins + winnerAngle;
+  const extraDegrees = Math.random() * 360;
+  const totalRotation = 360 * fullSpins + extraDegrees;
 
   const startRotation = accumulatedRotation;
   accumulatedRotation += totalRotation;
@@ -212,8 +209,14 @@ function spinWheel() {
   wheelEl.style.transform = `rotate(${accumulatedRotation}deg)`;
 
   setTimeout(() => {
+    const finalRotation = accumulatedRotation % 360;
+    const pointerAngle = 90;
+    const angleAtPointer = (pointerAngle - finalRotation + 360) % 360;
+    const winnerIndex =
+      n === 1 ? 0 : Math.floor(((angleAtPointer + 90) % 360) / anglePerSegment) % n;
+    const clampedIndex = Math.min(winnerIndex, n - 1);
     isSpinning = false;
-    showWinner(names[winnerIndex]);
+    showWinner(names[clampedIndex]);
     updateSpinPrompt();
     if (spinBtn) spinBtn.disabled = false;
   }, 4000);
