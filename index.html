@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wheel of Names</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Wheel of Names</h1>
+      <p class="subtitle">Add names, spin the wheel, pick a winner</p>
+    </header>
+
+    <main class="main">
+      <section class="names-section card">
+        <h2>Names</h2>
+        <p class="hint">Add up to 100 names. Each entry adds $5 to Prize and Charity.</p>
+        <div class="input-row">
+          <input
+            type="text"
+            id="name-input"
+            placeholder="Enter a name..."
+            maxlength="50"
+            autocomplete="off"
+          />
+          <button type="button" id="add-btn" class="btn btn-primary">Add</button>
+        </div>
+        <div class="name-count"><span id="name-count">0</span> / 100 names</div>
+        <ul id="name-list" class="name-list"></ul>
+        <button type="button" id="clear-btn" class="btn btn-ghost">Clear all names</button>
+      </section>
+
+      <section class="wheel-section">
+        <div class="money-cards">
+          <div class="money-card prize">
+            <span class="money-label">Prize Money</span>
+            <span class="money-value" id="prize-money">$0</span>
+          </div>
+          <div class="money-card charity">
+            <span class="money-label">Charity Money</span>
+            <span class="money-value" id="charity-money">$0</span>
+          </div>
+        </div>
+
+        <div class="wheel-container">
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <div class="wheel-outer">
+            <div id="wheel" class="wheel" role="img" aria-label="Spinning wheel with names"></div>
+          </div>
+          <button type="button" id="spin-btn" class="btn btn-spin" disabled>Spin the wheel</button>
+        </div>
+
+        <div id="winner-banner" class="winner-banner hidden" aria-live="polite">
+          <span class="winner-label">Winner:</span>
+          <span id="winner-name" class="winner-name"></span>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
