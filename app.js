@@ -177,13 +177,23 @@ function drawWheel() {
 }
 
 function hideWinner() {
+  winnerBanner.classList.remove('winner-show');
   winnerBanner.classList.add('hidden');
 }
 
 function showWinner(name) {
   winnerNameEl.textContent = name;
   winnerBanner.classList.remove('hidden');
+  winnerBanner.classList.add('winner-show');
   updateSpinPrompt();
+
+  if (typeof confetti === 'function') {
+    const count = 200;
+    const defaults = { origin: { y: 0.6 }, zIndex: 9999 };
+    confetti({ ...defaults, particleCount: count, spread: 70 });
+    confetti({ ...defaults, particleCount: count * 0.6, angle: 60, spread: 55 });
+    confetti({ ...defaults, particleCount: count * 0.6, angle: 120, spread: 55 });
+  }
 }
 
 function spinWheel() {
@@ -210,7 +220,7 @@ function spinWheel() {
 
   setTimeout(() => {
     const finalRotation = accumulatedRotation % 360;
-    const pointerAngle = 90;
+    const pointerAngle = 270;
     const angleAtPointer = (pointerAngle - finalRotation + 360) % 360;
     const winnerIndex =
       n === 1 ? 0 : Math.floor(((angleAtPointer + 90) % 360) / anglePerSegment) % n;
