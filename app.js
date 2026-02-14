@@ -17,7 +17,6 @@ const charityMoneyEl = document.getElementById('charity-money');
 const winnerBanner = document.getElementById('winner-banner');
 const winnerNameEl = document.getElementById('winner-name');
 const spinBtn = document.getElementById('spin-btn');
-const totalEntriesEl = document.getElementById('total-entries');
 
 let names = [];
 let isSpinning = false;
@@ -31,7 +30,6 @@ function updateMoneyDisplays() {
 
 function updateNameCount() {
   nameCountEl.textContent = names.length;
-  if (totalEntriesEl) totalEntriesEl.textContent = `Total entries: ${names.length}`;
   addBtn.disabled = names.length >= MAX_NAMES || !nameInput.value.trim();
   if (names.length >= MAX_NAMES) {
     nameInput.placeholder = 'Max 100 names';
@@ -46,8 +44,8 @@ function updateSpinPrompt() {
   const text = wheelCenter.querySelector('.wheel-center-text');
   const sub = wheelCenter.querySelector('.wheel-center-sub');
   if (names.length < 1) {
-    text.textContent = 'Add names to spin';
-    if (sub) sub.textContent = '';
+    text.textContent = 'Add names';
+    if (sub) sub.textContent = 'then spin';
   } else if (isSpinning) {
     text.textContent = 'Spinning...';
     if (sub) sub.textContent = '';
@@ -110,13 +108,6 @@ function renderNameList() {
   });
 }
 
-function getSegmentClipPath(angleDeg) {
-  const rad = (angleDeg * Math.PI) / 180;
-  const x = 50 + 50 * Math.cos(rad);
-  const y = 50 - 50 * Math.sin(rad);
-  return `polygon(50% 50%, 100% 50%, ${x}% ${y}%)`;
-}
-
 function drawWheel() {
   accumulatedRotation = 0;
   wheelEl.innerHTML = '';
@@ -126,50 +117,62 @@ function drawWheel() {
   const n = names.length;
 
   if (n === 0) {
-    const full = document.createElement('div');
-    full.className = 'wheel-segment wheel-segment-full';
-    full.style.background = '#2a2a35';
-    wheelEl.appendChild(full);
-    const empty = document.createElement('div');
-    empty.className = 'empty-wheel-message';
-    empty.textContent = 'Add names to get started';
-    wheelEl.appendChild(empty);
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 200 200');
+    svg.setAttribute('class', 'wheel-svg');
+    svg.innerHTML = '<circle cx="100" cy="100" r="100" fill="#2a2a35"/>';
+    wheelEl.appendChild(svg);
     updateSpinPrompt();
     return;
   }
 
   const anglePerSegment = 360 / n;
+  const cx = 100;
+  const cy = 100;
+  const r = 100;
+  const textRadius = 65;
 
-  if (n === 1) {
-    const segment = document.createElement('div');
-    segment.className = 'wheel-segment wheel-segment-full';
-    segment.style.background = SEGMENT_COLORS[0];
-    const inner = document.createElement('div');
-    inner.className = 'wheel-segment-inner wheel-segment-inner-center';
-    const span = document.createElement('span');
-    span.textContent = names[0];
-    inner.appendChild(span);
-    segment.appendChild(inner);
-    wheelEl.appendChild(segment);
-  } else {
-    names.forEach((name, i) => {
-      const segment = document.createElement('div');
-      segment.className = 'wheel-segment';
-      segment.style.transform = `rotate(${i * anglePerSegment}deg)`;
-      segment.style.background = SEGMENT_COLORS[i % SEGMENT_COLORS.length];
-      segment.style.clipPath = getSegmentClipPath(anglePerSegment);
-      segment.style.webkitClipPath = getSegmentClipPath(anglePerSegment);
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 200 200');
+  svg.setAttribute('class', 'wheel-svg');
 
-      const inner = document.createElement('div');
-      inner.className = 'wheel-segment-inner';
-      inner.style.transform = `rotate(${anglePerSegment / 2}deg)`;
-      const span = document.createElement('span');
-      span.textContent = name;
-      inner.appendChild(span);
-      segment.appendChild(inner);
-      wheelEl.appendChild(segment);
-    });
+  for (let i = 0; i < n; i++) {
+    if (n === 1) {
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', cx);
+      circle.setAttribute('cy', cy);
+      circle.setAttribute('r', r);
+      circle.setAttribute('fill', SEGMENT_COLORS[0]);
+      svg.appendChild(circle);
+    } else {
+      const a1 = (i * anglePerSegment - 90) * (Math.PI / 180);
+      const a2 = ((i + 1) * anglePerSegment - 90) * (Math.PI / 180);
+      const x1 = cx + r * Math.cos(a1);
+      const y1 = cy + r * Math.sin(a1);
+      const x2 = cx + r * Math.cos(a2);
+      const y2 = cy + r * Math.sin(a2);
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z`);
+      path.setAttribute('fill', SEGMENT_COLORS[i % SEGMENT_COLORS.length]);
+      svg.appendChild(path);
+    }
+
+    const midAngle = (i * anglePerSegment + anglePerSegment / 2 - 90) * (Math.PI / 180);
+    const tx = cx + textRadius * Math.cos(midAngle);
+    const ty = cy + textRadius * Math.sin(midAngle);
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', tx);
+    text.setAttribute('y', ty);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('dominant-baseline', 'middle');
+    text.setAttribute('class', 'wheel-segment-text');
+    text.setAttribute('transform', `rotate(${(i * anglePerSegment + anglePerSegment / 2) % 360} ${tx} ${ty})`);
+    const name = names[i];
+    text.textContent = name.length > 12 ? name.slice(0, 11) + '…' : name;
+    svg.appendChild(text);
   }
+
+  wheelEl.appendChild(svg);
   updateSpinPrompt();
 }
 

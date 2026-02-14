@@ -115,67 +115,20 @@ body {
   transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.wheel-segment {
-  position: absolute;
-  left: 0;
-  top: 0;
+.wheel-svg {
   width: 100%;
   height: 100%;
-  transform-origin: 50% 50%;
-  overflow: hidden;
-}
-
-.wheel-segment-full {
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  display: block;
   border-radius: 50%;
 }
 
-.wheel-segment-inner-center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 80%;
-  transform: translate(-50%, -50%);
-  padding-left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.wheel-segment-inner-center span {
-  transform: none;
-  max-width: 100%;
-}
-
-.wheel-segment-inner {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 200%;
-  height: 200%;
-  margin-left: -100%;
-  margin-top: -100%;
-  transform-origin: 50% 50%;
-  display: flex;
-  align-items: center;
-  padding-left: 37.5%;
-  pointer-events: none;
-}
-
-.wheel-segment span {
-  transform: rotate(-90deg);
-  white-space: nowrap;
-  font-size: clamp(0.65rem, 2.5vw, 0.9rem);
+.wheel-segment-text {
+  fill: #fff;
+  font-size: 11px;
   font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-  color: #fff;
-  max-width: 85px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-family: var(--font), sans-serif;
+  user-select: none;
+  pointer-events: none;
 }
 
 .wheel-center {
@@ -221,14 +174,6 @@ body {
   font-size: 0.7rem;
   color: var(--text-muted);
   margin-top: 0.2rem;
-}
-
-.total-entries {
-  font-size: 1rem;
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 0.5rem;
 }
 
 .money-cards {
